@@ -4,25 +4,30 @@ import products from '@assets/data/products';
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import { useState } from 'react';
 import Button from '@/components/Button';
+import { useCart } from '@/providers/CartProvider';
+import { PizzaSize } from '@/types';
 
-const sizesPizza = [ 'S', 'M', 'L', ' XL'];
+const sizesPizza: PizzaSize[] = [ 'S', 'M', 'L', 'XL'];
 
 const  ProductDetailsScreen =() => { 
 
   const {id} = useLocalSearchParams();
+  const {addItem}  = useCart();
 
-  const [selectedSize, setSelected] = useState('M');
+  const [selectedSize, setSelected] = useState<PizzaSize>('M');
 
   const product = products.find((p) => p.id.toString() == id);
  
+  const addToCart = () => {
+    if (!product) {
+      return;
+    }
+    addItem ( product, selectedSize);
+  };
+
   if(!product){
     return <Text>Sorry,not Found </Text>;
   }
-
-  const addToCart = () => {
-    if (!product) return;
-    console.warn('Adding to cart, size', selectedSize);
-  };
 
   return (
     <View>
@@ -33,7 +38,9 @@ const  ProductDetailsScreen =() => {
       <View style ={styles.sizesPizza}>
             {sizesPizza.map((size) => ( 
                 <Pressable 
-                onPress={() => setSelected(size)}
+                onPress={() => {
+                  setSelected(size)
+                }} 
                     style ={[
                       styles.size,
                       {
@@ -69,7 +76,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   price:  {
-    fontSize: 30,
+    fontSize: 18,
     fontWeight: 'bold',
     marginTop: 'auto',
   },
