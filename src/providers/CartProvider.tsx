@@ -1,13 +1,16 @@
 import { CartItem, Product } from "@/types";
 import { PropsWithChildren, createContext,useContext, useState  } from "react";
+import { randomUUID } from "expo-crypto"; 
 
 type CartType = {
     items: CartItem[],
     addItem: (product: Product, size: CartItem['size']) => void; 
+    updateQuantity: (itemId: string, amount: -1 | 1) => void;
 }
 const CartContext = createContext<CartType>({
     items: [],
     addItem: () => {},
+    updateQuantity: () => {},
 });
 
 const CartProvider = ({ children }: PropsWithChildren) =>{ 
@@ -15,19 +18,24 @@ const CartProvider = ({ children }: PropsWithChildren) =>{
 
     const addItem = (product: Product, size: CartItem['size'])=>{
         const newCartItem: CartItem ={
-            id: '1',
+            id: randomUUID(), //generate
             product,
             product_id: product.id,
             size,
             quantity: 1,
-            };
-    
+            };    
             setItems([newCartItem, ...items])
-
     };
+    // update the quantity by Huy Tyler
+    const updateQuantity = (itemId: string, amount: -1 | 1) =>{
+        const updateItems = items.map(item => item.id != itemId ? item : {...item, quantity: item.quantity + amount});
+        setItems(updateItems);
+        console.log(itemId, amount);
+    }
+    console.log(items);
 
      return(
-        <CartContext.Provider value = {{items: items, addItem  }}>
+        <CartContext.Provider value = {{ items, addItem, updateQuantity  }}>
             {children}
         </CartContext.Provider>
     );
