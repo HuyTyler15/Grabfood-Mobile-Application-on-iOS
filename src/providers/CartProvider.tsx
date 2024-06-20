@@ -17,6 +17,17 @@ const CartProvider = ({ children }: PropsWithChildren) =>{
     const [items, setItems] = useState<CartItem[]>([]);
 
     const addItem = (product: Product, size: CartItem['size'])=>{
+
+        const existingItem = items.find(item => item.product == product && item.size == size );
+
+        // if the shopping cart got the product already(same name.size), it will be plus 1 more. that's why Huy use the updateQuantity.
+
+        if (existingItem){
+            updateQuantity(existingItem.id,1 );
+            return;
+        }
+        // the same => return, no need to add more
+
         const newCartItem: CartItem ={
             id: randomUUID(), //generate
             product,
@@ -26,15 +37,20 @@ const CartProvider = ({ children }: PropsWithChildren) =>{
             };    
             setItems([newCartItem, ...items]);
     };
-    // update the quantity by Huy Tyler
+    // update the quantity by Huy
     const updateQuantity = (itemId: string, amount: -1 | 1) => {
         const updateItems = items.map((item) => 
             item.id !== itemId ? 
             item : 
-            { ...item, quantity: item.quantity + amount});
+            { ...item, quantity: item.quantity + amount}
+        ).filter((item) => item.quantity > 0);
+
+        // filter((item) => item.quantity > 0); Huy said remove it if the quantity is zero on the cart.
+
+        
     setItems(updateItems);   
-    }
-    console.log(items);
+    };
+    
 
      return(
         <CartContext.Provider value = {{ items , addItem , updateQuantity  }}>
