@@ -24,18 +24,20 @@ const CartProvider = ({ children }: PropsWithChildren) =>{
             size,
             quantity: 1,
             };    
-            setItems([newCartItem, ...items])
+            setItems([newCartItem, ...items]);
     };
     // update the quantity by Huy Tyler
-    const updateQuantity = (itemId: string, amount: -1 | 1) =>{
-        const updateItems = items.map(item => item.id != itemId ? item : {...item, quantity: item.quantity + amount});
-        setItems(updateItems);
-        console.log(itemId, amount);
+    const updateQuantity = (itemId: string, amount: -1 | 1) => {
+        const updateItems = items.map((item) => 
+            item.id !== itemId ? 
+            item : 
+            { ...item, quantity: item.quantity + amount});
+    setItems(updateItems);   
     }
     console.log(items);
 
      return(
-        <CartContext.Provider value = {{ items, addItem, updateQuantity  }}>
+        <CartContext.Provider value = {{ items , addItem , updateQuantity  }}>
             {children}
         </CartContext.Provider>
     );
