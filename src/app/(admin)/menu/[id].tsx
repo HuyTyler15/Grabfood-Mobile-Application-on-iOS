@@ -24,7 +24,6 @@ const  ProductDetailsScreen =() => {
     router.push('/cart');
   };
 
-
   if(!product){
     return <Text>Sorry,not Found </Text>;
   }
@@ -34,27 +33,9 @@ const  ProductDetailsScreen =() => {
       <Stack.Screen options={{ title: product.name}}/>
       <Image source={{ uri: product.image || defaultPizzaImage }} style = {styles.image} />
 
-      <Text style = {{ fontSize: 30}}>Select size</Text>
-      <View style ={styles.sizesPizza}>
-            {sizesPizza.map((size) => ( 
-                <Pressable 
-                onPress={() => {
-                  setSelected(size)
-                }} 
-                    style ={[
-                      styles.size,
-                      {
-                          backgroundColor: selectedSize == size ? 'gainsboro' : 'white',
-                      }]}
+      <Text style={styles.title} >{product.name}</Text>
 
-                      key={size}
-                      >
-                        <Text style ={styles.sizeText}>{size}</Text>
-                </Pressable>
-            ))} 
-      </View>
       <Text style={styles.price} >Price:${product.price}</Text>
-      <Button onPress={addToCart} text="Add to cart" />
     </View>
   );
 };
@@ -75,28 +56,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontWeight: '600',
   },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   price:  {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 'auto',
-  },
-  sizesPizza: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 10,
-  },
-  size: {
-    backgroundColor:'gainsboro',
-    width: 50,
-    aspectRatio: 1,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sizeText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
   },
 })
 
