@@ -6,17 +6,19 @@ type CartType = {
     items: CartItem[],
     addItem: (product: Product, size: CartItem['size']) => void; 
     updateQuantity: (itemId: string, amount: -1 | 1) => void;
+    total: number;
 }
 const CartContext = createContext<CartType>({
     items: [],
     addItem: () => {},
     updateQuantity: () => {},
+    total: 0,
 });
 
-const CartProvider = ({ children }: PropsWithChildren) =>{ 
+const CartProvider = ({ children }: PropsWithChildren) => { 
     const [items, setItems] = useState<CartItem[]>([]);
 
-    const addItem = (product: Product, size: CartItem['size'])=>{
+    const addItem = (product: Product, size: CartItem['size']) => {
 
         const existingItem = items.find(item => item.product == product && item.size == size );
 
@@ -34,9 +36,10 @@ const CartProvider = ({ children }: PropsWithChildren) =>{
             product_id: product.id,
             size,
             quantity: 1,
-            };    
-            setItems([newCartItem, ...items]);
+        };
+        setItems([newCartItem, ...items]);
     };
+
     // update the quantity by Huy
     const updateQuantity = (itemId: string, amount: -1 | 1) => {
         const updateItems = items.map((item) => 
@@ -44,16 +47,17 @@ const CartProvider = ({ children }: PropsWithChildren) =>{
             item : 
             { ...item, quantity: item.quantity + amount}
         ).filter((item) => item.quantity > 0);
-
-        // filter((item) => item.quantity > 0); Huy said remove it if the quantity is zero on the cart.
-
-        
-    setItems(updateItems);   
+        // filter((item) => item.quantity > 0); Huy said remove it if the quantity is zero on the cart.  
+        setItems(updateItems);
     };
     
+        let total = (items.reduce(
+            (sum, item) => (sum += item.product.price * item.quantity), 
+            0));
+        total = parseFloat(total.toFixed(2));
 
      return(
-        <CartContext.Provider value = {{ items , addItem , updateQuantity  }}>
+        <CartContext.Provider value = {{ items , addItem , updateQuantity, total  }}>
             {children}
         </CartContext.Provider>
     );
