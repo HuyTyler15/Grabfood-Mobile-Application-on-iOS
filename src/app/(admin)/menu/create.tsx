@@ -1,18 +1,23 @@
 import Button from '@/components/Button'
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import { useState } from 'react'
-import { View, Text, StyleSheet, TextInput, Image } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native'
 import Colors from '@/constants/Colors';
 import * as ImagePicker from 'expo-image-picker'; 
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 
 const CreateProductScreen = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState<string | null>(null);
-
     const [errors, setErrors] = useState('');
+
+    const {id} = useLocalSearchParams();
+    const isUpdating = !!id;
+    // huy:double exclamation marks !! to make id become the Boolean Type here
+    // because id is not a Boolean Type here
+
     const resetScreen = () => {
         setName('');
         setPrice('');
@@ -35,14 +40,36 @@ const CreateProductScreen = () => {
         return true;
     };
 
+    const onSubmit = () => {;
+        if (isUpdating) {
+            onUpdateCreate();
+            // update
+        } else{
+            onCreate();
+        }      
+    };
+
+    
+    const onUpdateCreate = () => {;
+        if (!validateThoseTypes()) {
+            return;
+        };
+        console.warn('Updating product ');
+        // going to save on database
+        resetScreen();
+    };
+
     const onCreate = () => {;
         if (!validateThoseTypes()) {
             return;
         };
-        console.warn('Add the new product ', name);
+        console.warn('Add the new product', name);
         // going to save on database
         resetScreen();
     };
+
+
+
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -60,9 +87,28 @@ const CreateProductScreen = () => {
         }
       };
 
+      const onDelete =() => {
+        console.warn('DELETE')
+      }
+
+      const confirmDelete = () => {
+        Alert.alert('Delete Product?', 'Are you sure to delete this one ?',[
+            {
+                text: 'No, keep it',
+            },
+            {
+                text: 'Delete',
+                style: 'destructive',
+                onPress: onDelete,
+            },
+        ]);
+      };
+
   return (
     <View style={ styles.container}>
-      <Stack.Screen options={{title: 'Add the new product here'}}/>
+
+      <Stack.Screen options={{title: isUpdating ? 'Update' : 'Add the new one'}}/>
+
       <Image source={{ uri: image || defaultPizzaImage}} style={styles.image}/>
       <Text 
       onPress={pickImage}
@@ -84,7 +130,14 @@ const CreateProductScreen = () => {
       keyboardType="numeric"
       />
 
-      <Button onPress={onCreate} text='Add the new product'/>
+      <Text style = {{color: 'red'}}>{errors}</Text>
+      <Button onPress={onSubmit} text={ isUpdating ? 'Update' : 'Add this one'}/>{
+        isUpdating && (
+            <Text onPress={confirmDelete} style = {styles.selectbutton}>
+                Delete
+            </Text>
+        )
+      }
     </View>
   )
 }
