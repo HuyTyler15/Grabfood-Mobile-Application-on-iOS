@@ -10,9 +10,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 
 const sizesPizza: PizzaSize[] = [ 'S', 'M', 'L', 'XL'];
-
 const  ProductDetailsScreen =() => { 
-
   const {id} = useLocalSearchParams();
   const {addItem}  = useCart();
   const router = useRouter();
@@ -25,13 +23,13 @@ const  ProductDetailsScreen =() => {
     addItem ( product, selectedSize);
     router.push('/cart');
   };
-
   if(!product){
     return <Text>Sorry,not Found </Text>;
-  }
+  };
 
   return (
-    <View style={styles.container}>
+    <View >
+      
       <Stack.Screen 
             options={{ 
             title: 'Menu',
@@ -51,13 +49,14 @@ const  ProductDetailsScreen =() => {
           ), }}/>
 
 
-
       <Stack.Screen options={{ title: product.name}}/>
+
       <Image source={{ uri: product.image || defaultPizzaImage }} style = {styles.image} />
 
       <Text style={styles.title} >{product.name}</Text>
 
       <Text style={styles.price} >Price:${product.price}</Text>
+
     </View>
   );
 };
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
   price:  {
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 'auto',
+
   },
 })
 

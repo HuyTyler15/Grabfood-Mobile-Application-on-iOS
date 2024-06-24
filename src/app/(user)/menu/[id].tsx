@@ -32,9 +32,11 @@ const  ProductDetailsScreen =() => {
   return (
     <View>
       <Stack.Screen options={{ title: product.name}}/>
+
       <Image source={{ uri: product.image || defaultPizzaImage }} style = {styles.image} />
 
       <Text style = {{ fontSize: 30}}>Select size</Text>
+
       <View style ={styles.sizesPizza}>
             {sizesPizza.map((size) => ( 
                 <Pressable 
@@ -53,11 +55,19 @@ const  ProductDetailsScreen =() => {
                 </Pressable>
             ))} 
       </View>
+
       <Text style={styles.price} >Price:${product.price}</Text>
+
       <Button onPress={addToCart} text="Add to cart" />
+      
     </View>
   );
 };
+
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {

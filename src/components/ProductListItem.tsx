@@ -10,11 +10,17 @@ type ProductListItemProps = {
 }
 
 const ProductListItem = ({ product }: ProductListItemProps)=>{ 
+
   const segments = useSegments();
+  //segments direct to Admin page or User Page
+  //<Link href={`/${segments[0]}/menu/${product.id}`} asChild>
   
   return(
-    <Link href={`/menu/${product.id}`} asChild>
-       <Pressable  style={styles.container}>    
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
+
+
+       <Pressable  style={styles.container}>  
+
         <Image 
             source = {{uri: product.image || defaultPizzaImage}} 
             style={styles.image}
@@ -22,7 +28,9 @@ const ProductListItem = ({ product }: ProductListItemProps)=>{
          />
 
         <Text style={styles.title}>{product.name}</Text>
+
         <Text style={styles.price}>${product.price}</Text>
+
         </Pressable>
     </Link>
   );
