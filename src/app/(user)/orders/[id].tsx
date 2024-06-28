@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList} from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import orders from '../../../../assets/data/orders';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
+
 
 
 export default function OrderDetailsScreen() {
@@ -13,8 +14,6 @@ export default function OrderDetailsScreen() {
   if(!order){
     return <Text>Order Not found </Text>
   }
-
-  console.log(order);
 
 
   return (
@@ -27,6 +26,7 @@ export default function OrderDetailsScreen() {
         renderItem={({ item }) => <OrderItemListItem item={item} />}
         contentContainerStyle={{ gap: 10, padding: 10 }}
         ListHeaderComponent={() => <OrderListItem order={order}/>}
+
       />
 
       {/* <Text> Order details: {id} </Text> */}
