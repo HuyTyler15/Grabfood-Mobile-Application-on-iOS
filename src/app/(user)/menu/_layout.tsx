@@ -12,7 +12,7 @@ export default function MenuStack() {
 
     headerRight: () => (
 
-      <Link href="/cart" asChild>
+      <Link href="/(admin)" asChild>
 
         <Pressable>
 
