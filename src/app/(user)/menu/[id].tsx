@@ -1,21 +1,25 @@
 import { Text, View, Image, StyleSheet, Pressable } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import products from '@assets/data/products';
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import { useState } from 'react';
 import Button from '@/components/Button';
 import { useCart } from '@/providers/CartProvider';
 import { PizzaSize } from '@/types';
+import { useProduct } from '@/api/product';
+import { ActivityIndicator } from 'react-native';
 
 const sizesPizza: PizzaSize[] = [ 'S', 'M', 'L', 'XL'];
 
 const  ProductDetailsScreen =() => { 
 
-  const {id} = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat (typeof idString === 'string' ? idString : idString[0]);
+  const { data: product, error, isLoading } = useProduct(id);
+
   const {addItem}  = useCart();
   const router = useRouter();
   const [selectedSize, setSelected] = useState<PizzaSize>('M');
-  const product = products.find((p) => p.id.toString() == id);
+
   const addToCart = () => {
     if (!product) {
       return;
@@ -24,10 +28,13 @@ const  ProductDetailsScreen =() => {
     router.push('/cart');
   };
 
-
-  if(!product){
-    return <Text>Sorry,not Found </Text>;
-  }
+    if(isLoading){
+      return <ActivityIndicator />
+    }
+    
+    if(error){
+      return <Text> Can't bring it back, cannot fetch products, failed </Text>
+    }
 
   return (
     <View>

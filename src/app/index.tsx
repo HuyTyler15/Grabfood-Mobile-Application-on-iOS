@@ -20,8 +20,6 @@ const index = () => {
     return <Redirect href={'/user'} />;
   }
 
-
-
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
 
@@ -32,7 +30,6 @@ const index = () => {
       <Link href={'/(user)'} asChild>
         <Button text="User side" />
       </Link>
-
 
       <Button onPress={() => supabase.auth.signOut()} text = "Sign out" />
 
