@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native'
 import Colors from '@/constants/Colors';
 import * as ImagePicker from 'expo-image-picker'; 
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useInsertProduct, useProduct,useUpdateProduct } from '@/api/product';
+import { useInsertProduct, useProduct,useUpdateProduct ,useDeleteProduct } from '@/api/product';
 
 
 const CreateProductScreen = () => {
@@ -24,6 +24,8 @@ const CreateProductScreen = () => {
     const { mutate: insertProduct } = useInsertProduct();
     const { mutate: updateProduct } = useUpdateProduct();
     const { data: updatingProduct} = useProduct(id);
+    const { mutate: deleteProduct } = useDeleteProduct();
+
 
     console.log(updatingProduct);
 
@@ -31,8 +33,8 @@ const CreateProductScreen = () => {
 
     useEffect(() => {
         if(updatingProduct){
-            setName(updateProduct.name);
-            setPrice(updatingProduct.price);
+            setName(updatingProduct.name);
+            setPrice(updatingProduct.price.toString());
             setImage(updatingProduct.image);
         }
     },[updatingProduct]);
@@ -106,10 +108,6 @@ const CreateProductScreen = () => {
     };
 
 
-
-
-
-
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -119,16 +117,19 @@ const CreateProductScreen = () => {
           quality: 1,
         });
     
-        console.log(result);
-    
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
       };
 
       const onDelete =() => {
-        console.warn('DELETE')
-      }
+                deleteProduct(id, {
+                    onSuccess:() =>{
+                    resetScreen();
+                    router.replace('/(admin)');      // back to admin menu  
+                },
+            });
+      };
 
       const confirmDelete = () => {
         Alert.alert('Delete Product?', 'Are you sure to delete this one ?',[
