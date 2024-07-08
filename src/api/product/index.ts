@@ -1,10 +1,10 @@
 import { supabase } from "@/lib/supabase";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // this function will do everything that use Query is doing
 export const useProductList = () => {
     return useQuery({
-        queryKey: ['product'],
+        queryKey: ['products'],
         queryFn: async() => {
           const {data, error } = await supabase.from('products').select('*');
           if (error) {
@@ -17,7 +17,7 @@ export const useProductList = () => {
 
 export const useProduct = (id: number) => {
     return useQuery({
-        queryKey: ['product', id],
+        queryKey: ['products', id],
         queryFn: async() => {
           const {data, error } = await supabase
           .from('products')
@@ -31,4 +31,53 @@ export const useProduct = (id: number) => {
           return data;
         },
       });
-}
+};
+
+export const useInsertProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(data: any){
+      const {error, data: newProduct } =await supabase.from('products').insert({
+        name: data.name,
+        image: data.image,
+        price: data.price,
+      })
+      .single();
+      if (error) {
+        throw new Error(error.message);
+      }
+      return newProduct;
+    },
+    async onSuccess() {
+      await queryClient.invalidateQueries(['products']);
+    },
+  });
+};
+
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(data: any){
+      const {error, data: updateProduct } =await supabase.from('products').insert({
+        name: data.name,
+        image: data.image,
+        price: data.price,
+      })
+      .eq('id', data.id)
+      .select()
+      .single();
+      if (error) {
+        throw new Error(error.message);
+      }
+      return updateProduct;
+    },
+    async onSuccess() {
+      await queryClient.invalidateQueries(['products']);
+      await queryClient.invalidateQueries(['products']);
+    },
+    
+  });
+};
+

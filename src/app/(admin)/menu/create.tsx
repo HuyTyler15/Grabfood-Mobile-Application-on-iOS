@@ -1,10 +1,11 @@
 import Button from '@/components/Button'
 import { defaultPizzaImage } from '@/components/ProductListItem';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native'
 import Colors from '@/constants/Colors';
 import * as ImagePicker from 'expo-image-picker'; 
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useInsertProduct, useProduct,useUpdateProduct } from '@/api/product';
 
 
 const CreateProductScreen = () => {
@@ -13,10 +14,28 @@ const CreateProductScreen = () => {
     const [image, setImage] = useState<string | null>(null);
     const [errors, setErrors] = useState('');
 
-    const {id} = useLocalSearchParams();
+    const {id: idString} = useLocalSearchParams();
+    const id = parseFloat(typeof idString === 'string' ? idString : Array.isArray(idString) && idString.length > 0 ? idString[0] : '');
+
     const isUpdating = !!id;
     // huy:double exclamation marks !! to make id become the Boolean Type here
     // because id is not a Boolean Type here
+
+    const { mutate: insertProduct } = useInsertProduct();
+    const { mutate: updateProduct } = useUpdateProduct();
+    const { data: updatingProduct} = useProduct(id);
+
+    console.log(updatingProduct);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if(updatingProduct){
+            setName(updateProduct.name);
+            setPrice(updatingProduct.price);
+            setImage(updatingProduct.image);
+        }
+    },[updatingProduct]);
 
     const resetScreen = () => {
         setName('');
@@ -42,31 +61,51 @@ const CreateProductScreen = () => {
 
     const onSubmit = () => {;
         if (isUpdating) {
-            onUpdateCreate();
+            onUpdate();
             // update
         } else{
             onCreate();
         }      
     };
 
-    
-    const onUpdateCreate = () => {;
-        if (!validateThoseTypes()) {
-            return;
-        };
-        console.warn('Updating product ');
-        // going to save on database
-        resetScreen();
-    };
-
+    // Save to Database supabase
     const onCreate = () => {;
         if (!validateThoseTypes()) {
             return;
         };
         console.warn('Add the new product', name);
-        // going to save on database
+
+        insertProduct(
+            {id, name, price: parseFloat(price), image },
+            {
+                onSuccess: () => {
+                    resetScreen();
+                    router.back();       // back to admin menu  
+                },
+            }
+        );
+
+    };
+    
+    const onUpdate = () => {;
+        if (!validateThoseTypes()) {
+            return;
+        };
+        console.warn('Updating product ');
+        // going to update on database
+        updateProduct(
+            { id, name, price: parseFloat(price), image },
+            {
+                onSuccess: () => {
+                    resetScreen();
+                    router.back();       // back to admin menu  
+                },
+            }
+        );
         resetScreen();
     };
+
+
 
 
 

@@ -13,7 +13,7 @@ const sizesPizza: PizzaSize[] = [ 'S', 'M', 'L', 'XL'];
 
 const  ProductDetailsScreen =() => { 
 
-  let { id: idString } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
   
   const id = parseFloat(typeof idString === 'string' ? idString : Array.isArray(idString) && idString.length > 0 ? idString[0] : '');
 
