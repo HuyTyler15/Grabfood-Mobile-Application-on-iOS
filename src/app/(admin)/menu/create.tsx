@@ -75,7 +75,7 @@ const CreateProductScreen = () => {
         if (!validateThoseTypes()) {
             return;
         };
-        console.warn('Add the new product', name);
+        console.warn('Adding the new product ', name);
 
         insertProduct(
             {id, name, price: parseFloat(price), image },
@@ -93,7 +93,7 @@ const CreateProductScreen = () => {
         if (!validateThoseTypes()) {
             return;
         };
-        console.warn('Updating product ');
+        console.warn('Updating product . . . ');
         // going to update on database
         updateProduct(
             { id, name, price: parseFloat(price), image },
@@ -123,6 +123,7 @@ const CreateProductScreen = () => {
       };
 
       const onDelete =() => {
+        console.warn('Deleting product . . . ');
                 deleteProduct(id, {
                     onSuccess:() =>{
                     resetScreen();

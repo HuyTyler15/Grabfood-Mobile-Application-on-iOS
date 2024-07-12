@@ -24,7 +24,7 @@ const index = () => {
     <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
 
       <Link href={'/(admin)'} asChild>
-        <Button text="Admin" />
+        <Button text="Owner" />
       </Link>
 
       <Link href={'/(user)'} asChild>

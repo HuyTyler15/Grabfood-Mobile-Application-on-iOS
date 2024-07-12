@@ -1,11 +1,8 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Redirect, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
-
 import Colors from '../../constants/Colors';
 import { useColorScheme } from 'react-native';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { useAuth } from '@/providers/AuthProvider';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -48,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="menu"
         options={{
-          title: 'Menu for you today!',
+          title: 'Menu for ADMIN SIDE !',
           headerShown: false,
           tabBarIcon: ({ color }) => (<TabBarIcon name="cutlery" color={color} />
           ),
@@ -57,7 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="orders"
         options={{
-          title: 'Orders',
+          title: 'Orders of ADMIN SIDE ',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
