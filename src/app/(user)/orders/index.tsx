@@ -14,7 +14,6 @@ export default function OrdersScreen(){
   }
     return (
         <>
-          {/* <Stack.Screen options={{ title: 'Orders' }} /> */}
           <FlatList
             data= {orders}           
             renderItem={({ item }) => <OrderListItem order={item} />}
