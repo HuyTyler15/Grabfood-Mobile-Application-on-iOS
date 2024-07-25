@@ -1,19 +1,20 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
-import Colors from '../constants/Colors';
-import { OrderItem, Tables } from '../types';
-import { defaultPizzaImage } from './ProductListItem';
-
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import Colors from "../constants/Colors";
+import { OrderItem, Tables } from "../types";
+import { defaultPizzaImage } from "./ProductListItem";
+import RemoteImage from "./RemoteImage";
 
 type OrderItemListItemProps = {
-  item: { products: Tables<'products'> } & Tables<'order_items'>;
+  item: { products: Tables<"products"> } & Tables<"order_items">;
 };
 
 const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: item.products.image || defaultPizzaImage }}
+      <RemoteImage
+        path={item.products.image}
+        fallback={defaultPizzaImage}
         style={styles.image}
         resizeMode="contain"
       />
@@ -33,41 +34,41 @@ const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 5,
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   image: {
     width: 75,
     aspectRatio: 1,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginRight: 10,
   },
   title: {
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 16,
     marginBottom: 5,
   },
   subtitleContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 5,
   },
   quantitySelector: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 10,
   },
   quantity: {
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 18,
   },
   price: {
     color: Colors.light.tint,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

@@ -1,37 +1,31 @@
-import { Text, View, Platform } from 'react-native'
-import { StatusBar } from 'expo-status-bar';
-import { useCart } from '@/providers/CartProvider';
-import { useContext } from 'react';
-import { FlatList } from 'react-native';
-import CartListItem from '@/components/CartListItem';
-import Button from '@/components/Button';
-
+import { Text, View, Platform } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useCart } from "@/providers/CartProvider";
+import { useContext } from "react";
+import { FlatList } from "react-native";
+import CartListItem from "@/components/CartListItem";
+import Button from "@/components/Button";
 
 const CartScreen = () => {
+  const { items, total, checkout } = useCart();
 
-  const {items, total, checkout } = useCart();
-  
-    return (
-      
-      <View style={{ padding:10 }}>
+  return (
+    <View style={{ padding: 10 }}>
+      <FlatList
+        data={items}
+        renderItem={({ item }) => <CartListItem cartItem={item} />}
+        contentContainerStyle={{ gap: 10 }}
+      />
 
-        <FlatList 
-        data={items} 
-        renderItem={({item}) => <CartListItem cartItem={item} /> }
-        contentContainerStyle={{gap: 10 }}
-        />
+      <Text style={{ marginTop: 20, fontSize: 20, fontWeight: "500" }}>
+        Total: ${total}
+      </Text>
 
-        <Text style={{ marginTop:20 , fontSize: 20, fontWeight:'500' }}>
-          Total: ${total}
-        </Text>
+      <Button onPress={checkout} text="Checkout" />
 
-        <Button onPress={checkout} text='Checkout'/>
-        
-        <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-
-      </View>
-
-    );
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+    </View>
+  );
 };
 
 export default CartScreen;
