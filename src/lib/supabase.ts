@@ -15,10 +15,10 @@ const ExpoSecureStoreAdapter = {
   },
 };
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || "" ;
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON || "" ;
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '' ;
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON || '' ;
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient<Database>(supabaseUrl , supabaseAnonKey, {
   auth: {
     storage: ExpoSecureStoreAdapter as any,
     autoRefreshToken: true,
