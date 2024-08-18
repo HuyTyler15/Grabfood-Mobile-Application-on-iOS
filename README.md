@@ -1,4 +1,6 @@
-
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?text=Hey Everyone!🕹️&animation=fadeIn&type=waving&color=gradient&height=100"/>
+</p>
 
 <h2> 🚀 &nbsp; Full Stack Mobile Development by using React Native to make Mobile App</h2>
 <p align="left">
