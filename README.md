@@ -1,5 +1,5 @@
 
-<h2> 🚀 &nbsp; Full Stack Mobile Development by using React Native to make Mobile App</h2>
+<h2> 🚀 &nbsp; Full Stack Mobile Development by React Native to make Mobile App</h2>
 <p align="left">
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="php" width="45" height="45"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="vscode" width="45" height="45"/>
