@@ -6,3 +6,6 @@
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg" alt="bash" width="45" height="45"/>
 </p>
 <h2> 🚀 &nbsp;hi, this Foodie Mobile App was making by React Native on my iPhone 14 Pro Max by huytyler15</h2>
+
+![image](https://github.com/user-attachments/assets/cd1abfc3-12a4-4dc1-98a4-53c01df39a0e)
+
